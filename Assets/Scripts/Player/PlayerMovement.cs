@@ -18,8 +18,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float moveSpeed = 5.7f;
 
     // Character Attack Components
-    [SerializeField]private TrailRenderer attackLine;
-    [SerializeField]private GameObject attackArea;
+    [SerializeField] private TrailRenderer attackLine;
+    [SerializeField] private GameObject attackArea;
+    [SerializeField] private GameObject specialAttackArea;
+    [SerializeField] private GameObject specialAttackEffect;
     private bool isSpecialAttack = false;
 
     void Awake()
@@ -28,8 +30,14 @@ public class PlayerMovement : MonoBehaviour
         m_Animator = GetComponent<Animator>();
         m_Input = GetComponent<PlayerInput>();
         m_Character = GetComponent<PlayerCharacter>();
+
+    }
+
+    private void Start()
+    {
         attackLine.enabled = false;
         attackArea.SetActive(false);
+        specialAttackEffect.SetActive(false);
     }
 
     // Update is called once per frame
@@ -75,10 +83,12 @@ public class PlayerMovement : MonoBehaviour
     {
         if (m_Character.m_State == PlayerCharacter.PlayerState.Attack)
             return;
-        if (m_Input.SpecialAttack)
+
+        if (m_Input.SpecialAttack && m_Character.UseMP(10) >= 0)
         {
             m_Animator.SetTrigger("DoSpecialAttack");
             m_Character.m_State = PlayerCharacter.PlayerState.Attack;
+            isSpecialAttack = true;
         }
     }
 
@@ -89,14 +99,18 @@ public class PlayerMovement : MonoBehaviour
             attackArea.SetActive(true);
         else
         {
-
+            specialAttackArea.SetActive(true);
+            specialAttackEffect.SetActive(true);
         }
     }
 
     public void AttackEnd()
     {
+        isSpecialAttack = false;
         attackLine.enabled = false;
         attackArea.SetActive(false);
+        specialAttackArea.SetActive(false);
+        specialAttackEffect.SetActive(false);
         m_Character.m_State = PlayerCharacter.PlayerState.Idle;
     }
 }
