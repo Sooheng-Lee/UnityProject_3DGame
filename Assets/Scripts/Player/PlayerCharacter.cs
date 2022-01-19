@@ -4,17 +4,14 @@ using UnityEngine;
 
 public class PlayerCharacter : Character
 {
-    public enum PlayerState
+
+    [SerializeField] AudioClip RecoveryClip;
+    
+    private void Awake()
     {
-        Idle,
-        Attack,
-        Skill,
-        Damaged,
-        Death
+        m_Audio = GetComponent<AudioSource>();
+        m_Controller = GetComponent<CharacterController>();
     }
-
-    public PlayerState m_State;
-
     void Start()
     {
         SetCharacterInfo("Knight", 300, 100, 15, 5);
@@ -42,7 +39,10 @@ public class PlayerCharacter : Character
                     count++;
                 }
                 if (count != 0)
+                {
+                    m_Audio.PlayOneShot(RecoveryClip, 0.2f);
                     EffectManager.Instance.PlayRecoveryEffect(transform, 0);
+                }
                 break;
 
             case RecoveryCapsule.CapsuleType.MP:
@@ -53,7 +53,10 @@ public class PlayerCharacter : Character
                     count++;
                 }
                 if (count != 0)
+                {
+                    m_Audio.PlayOneShot(RecoveryClip, 0.2f);
                     EffectManager.Instance.PlayRecoveryEffect(transform, 1);
+                }
                 break;
         }
     }

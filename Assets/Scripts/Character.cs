@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
+    public enum CharacterState
+    {
+        Idle,
+        Attack,
+        Skill,
+        Damaged,
+        Death
+    }
     protected struct CharacterInfo
     {
         public string name;
@@ -18,6 +26,10 @@ public class Character : MonoBehaviour
     }
 
     protected CharacterInfo m_Info;
+    protected AudioSource m_Audio;
+    protected CharacterController m_Controller;
+    public CharacterState m_State;
+    public AudioClip HitClip;
     protected void SetCharacterInfo(string name, int hp, int mp, int attackMin, int defenseMin)
     {
         m_Info.name = name;
