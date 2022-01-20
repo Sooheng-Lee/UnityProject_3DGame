@@ -488,15 +488,15 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.20692442
-        functionName: PlaySwingSound
+      - time: 0.44540566
+        functionName: AttackEffect
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.44540566
-        functionName: AttackEffect
+      - time: 0.47496566
+        functionName: PlaySwingSound
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0

@@ -495,14 +495,14 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.20217648
+      - time: 0.4764033
         functionName: PlaySwingSound
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.53276795
+      - time: 0.80699474
         functionName: PlaySwingSound
         data: 
         objectReferenceParameter: {instanceID: 0}
@@ -511,6 +511,13 @@ ModelImporter:
         messageOptions: 0
       - time: 0.9433705
         functionName: AttackEnd
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.13043381
+        functionName: PlaySwingSound
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0

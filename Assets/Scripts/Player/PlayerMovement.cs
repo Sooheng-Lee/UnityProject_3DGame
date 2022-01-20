@@ -70,6 +70,14 @@ public class PlayerMovement : MonoBehaviour
                 break;
         }
         moveVec.y = moveVelocityY;
+        Debug.DrawRay(transform.position, transform.forward * 1f, Color.green);
+        RaycastHit hit;
+        bool onHit = Physics.SphereCast(transform.position, 0.5f, transform.forward, out hit, 1f, LayerMask.GetMask("Enemy"));
+        if (onHit)
+        {
+            Debug.DrawRay(transform.position, transform.forward * 1f, Color.red);
+            m_Controller.Move(-moveVec * Time.deltaTime);
+        }
         m_Controller.Move(moveVec * Time.deltaTime);
         if (m_Controller.isGrounded)
             moveVelocityY = 0f;
@@ -82,7 +90,6 @@ public class PlayerMovement : MonoBehaviour
         if (m_Input.NormalAttack)
         {
             m_Animator.SetTrigger("DoAttack");
-            PlaySwingSound();
             m_Character.m_State = Character.CharacterState.Attack;
         }
     }

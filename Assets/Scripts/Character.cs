@@ -12,7 +12,7 @@ public class Character : MonoBehaviour
         Damaged,
         Death
     }
-    protected struct CharacterInfo
+    public struct CharacterInfo
     {
         public string name;
         public int HP;
@@ -41,5 +41,43 @@ public class Character : MonoBehaviour
         m_Info.AttackMax = attackMin + 10;
         m_Info.DefenseMin = defenseMin;
         m_Info.DefenseMax = defenseMin + 5;
+    }
+
+    protected void TakeDamage(Transform damageLoc, int damageMin, int damageMax)
+    {
+        if (m_State == Character.CharacterState.Damaged)
+            return;
+        m_State = CharacterState.Damaged;
+        Animator anim = gameObject.GetComponent<Animator>();
+        if (anim != null)
+        {
+            anim.SetTrigger("GetHit");
+        }
+        int totalDamage = Random.Range(damageMin, damageMax + 1) - Random.Range(m_Info.DefenseMin, m_Info.DefenseMax);
+        totalDamage = (totalDamage > 0) ? totalDamage : 1;
+        m_Info.HP -= totalDamage;
+        Vector3 reactVec = transform.position - damageLoc.position;
+        reactVec.y = 0;
+        transform.LookAt(-reactVec);
+        StartCoroutine(OnDamaged(reactVec));
+    }
+
+    private IEnumerator OnDamaged(Vector3 Dir)
+    {
+        while(m_State==Character.CharacterState.Damaged)
+        {
+            m_Controller.Move(Dir * Time.deltaTime * 0.5f);
+            yield return null;
+        }
+    }
+
+    public CharacterInfo GetPlayerInfo()
+    {
+        return m_Info;
+    }
+
+    public void DamageEnd()
+    {
+        m_State = CharacterState.Idle;
     }
 }
