@@ -17,7 +17,7 @@ public class Enemy : Character
         Shell
     }
 
-    [SerializeField] private float trackSpeed;
+    // Enemy Base Components
     [SerializeField] MonsterType m_MonsterType;
     private NavMeshAgent m_Nav;
     private Animator m_Animator;
@@ -25,14 +25,21 @@ public class Enemy : Character
 
     // Patrol Mode Components
     [SerializeField] private GameObject patrolPackages;
+    [SerializeField] private float patrolSpeed;
     private Transform[] patrolSites;
     private int patrolIndex;
-    [SerializeField] private float patrolSpeed;
-    private Vector3 patrolVec;
-    private float moveVelocityY;
 
     // Track Mode Components
+    [SerializeField] private float trackSpeed;
     private Transform targetTransform;
+
+    // Attack Mode Components
+    [SerializeField] private GameObject AttackArea;
+    [SerializeField] private int attackMax;
+    public AudioClip AttackClip;
+    private float attackEnableTime = 1.5f;
+    private float attackTimer = 0f;
+
     void Awake()
     {
         m_Audio = GetComponent<AudioSource>();
@@ -43,6 +50,7 @@ public class Enemy : Character
 
     private void Start()
     {
+        AttackArea.SetActive(false);
         navState = NavState.Patrol;
         patrolSites = patrolPackages.GetComponentsInChildren<Transform>();
         patrolIndex = 1;
@@ -56,36 +64,54 @@ public class Enemy : Character
                 SetCharacterInfo("Shell", 80, 10, 10, 5);
                 break;
         }
-        patrolVec = transform.position;
         StartCoroutine(EnemyActionRoutine());
     }
     void Update()
     {
+        attackTimer += Time.deltaTime;
+        Debug.Log(navState);
         
-       
-       
+        
     }
 
+    public void AttackStart()
+    {
+        AttackArea.SetActive(true);
+        m_Audio.PlayOneShot(AttackClip);
+    }
+
+    public void AttackEnd()
+    {
+        AttackArea.SetActive(false);
+        m_State = CharacterState.Idle;
+        navState = NavState.Patrol;
+    }
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "PlayerAttack")
+        if(other.tag == "PlayerAttack" && m_State!=CharacterState.Damaged)
         {
             PlayerCharacter player = other.GetComponentInParent<PlayerCharacter>();
+            navState = NavState.Stop;
             if (player.m_State == Character.CharacterState.Attack) {
                 TakeDamage(player.transform, player.GetPlayerInfo().AttackMin, player.GetPlayerInfo().AttackMax);
+                targetTransform = player.transform;
             }
             else if(player.m_State == Character.CharacterState.Skill)
             {
                 TakeDamage(other.transform, player.GetPlayerInfo().AttackMin * 2, player.GetPlayerInfo().AttackMax * 2);
+                targetTransform = player.transform;
             }
-            navState = NavState.Stop;
+
         }
     }
 
     public void DamageEnd()
     {
         m_State = CharacterState.Idle;
-        navState = NavState.Patrol;
+        if (targetTransform != null)
+            navState = NavState.Tracking;
+        else
+            navState = NavState.Patrol;
     }
 
     private IEnumerator EnemyActionRoutine()
@@ -95,22 +121,45 @@ public class Enemy : Character
             switch (navState)
             {
                 case NavState.Stop:
-                    m_Nav.isStopped = true;
+                    m_Nav.enabled = false;
+                    if(m_State==CharacterState.Attack)
+                    {
+                        if (attackTimer >= attackEnableTime)
+                        {
+                            int index = Random.Range(0, attackMax);
+                            transform.LookAt(targetTransform);
+                            m_Animator.SetInteger("AttackIndex", index);
+                            m_Animator.SetTrigger("DoAttack");
+                            attackTimer = 0;
+                        }
+                    }
+                    if (Vector3.Distance(transform.position, targetTransform.position) > 1.5f)
+                    {
+                        navState = NavState.Tracking;
+                        m_State = CharacterState.Idle;
+                    }
+                    else if (Vector3.Distance(transform.position, targetTransform.position) > 5f)
+                    {
+                        navState = NavState.Patrol;
+                        m_State = CharacterState.Idle;
+                    }
                     break;
 
                 case NavState.Patrol:
-                    m_Nav.isStopped = false;
-                    if(Vector3.Distance(transform.position, patrolSites[patrolIndex].position) <= 1.5f)
+                    m_Nav.enabled = true;
+                    m_Nav.speed = patrolSpeed;
+                    if (Vector3.Distance(transform.position, patrolSites[patrolIndex].position) <= 1f)
                     {
                         patrolIndex++;
                         if (patrolIndex >= patrolSites.Length)
                             patrolIndex = 1;
                     }
                     m_Nav.SetDestination(patrolSites[patrolIndex].position);
-                    Debug.Log(patrolIndex);
+                    m_Animator.SetFloat("speed", 0.5f);
+                    
                     // Check Player Access
-                    Collider[] targetDetect = Physics.OverlapSphere(transform.position, 3f, LayerMask.GetMask("Player"));
-                    foreach(Collider hit in targetDetect)
+                    Collider[] targetDetect = Physics.OverlapSphere(transform.position, 5f, LayerMask.GetMask("Player"));
+                    foreach (Collider hit in targetDetect)
                     {
                         targetTransform = hit.transform;
                         navState = NavState.Tracking;
@@ -118,10 +167,22 @@ public class Enemy : Character
                     }
                     break;
                 case NavState.Tracking:
-                    m_Nav.isStopped = false;
+                    m_Nav.enabled = true;
+                    m_State = CharacterState.Idle;
+                    m_Nav.speed = trackSpeed;
+                    m_Animator.SetFloat("speed", 1f);
                     m_Nav.SetDestination(targetTransform.position);
-                    Debug.Log(targetTransform.position);
-                    Debug.Log(transform.position);
+                    
+                    if (Vector3.Distance(transform.position, targetTransform.position) <= 1.5f)
+                    {
+                        navState = NavState.Stop;
+                        m_State = CharacterState.Attack;
+                    }
+                    else if(Vector3.Distance(transform.position, targetTransform.position) > 5f)
+                    {
+                        navState = NavState.Patrol;
+                        m_State = CharacterState.Idle;
+                    }
                     break;
             }
             yield return null;

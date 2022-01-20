@@ -59,6 +59,7 @@ public class Character : MonoBehaviour
         Vector3 reactVec = transform.position - damageLoc.position;
         reactVec.y = 0;
         transform.LookAt(-reactVec);
+        m_Audio.PlayOneShot(HitClip);
         StartCoroutine(OnDamaged(reactVec));
     }
 

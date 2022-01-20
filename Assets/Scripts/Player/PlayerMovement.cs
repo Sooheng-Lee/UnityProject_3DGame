@@ -41,6 +41,7 @@ public class PlayerMovement : MonoBehaviour
         m_Character.m_State = Character.CharacterState.Idle;
         attackLine.enabled = false;
         attackArea.SetActive(false);
+        specialAttackArea.SetActive(false);
         specialAttackEffect.SetActive(false);
     }
 

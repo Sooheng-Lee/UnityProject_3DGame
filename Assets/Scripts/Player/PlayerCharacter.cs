@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class PlayerCharacter : Character
 {
-
     [SerializeField] AudioClip RecoveryClip;
-    
     private void Awake()
     {
         m_Audio = GetComponent<AudioSource>();

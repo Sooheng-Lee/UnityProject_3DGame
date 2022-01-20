@@ -60,10 +60,10 @@
     <Compile Include="Assets\Scripts\Player\PlayerInput.cs" />
     <Compile Include="Assets\Scripts\RecoveryCapsule.cs" />
     <Compile Include="Assets\ExternalAssets\BrokenVector\LowPolyFencePack\Scripts\DoorToggle.cs" />
+    <Compile Include="Assets\Scripts\Enemy\PatrolPoints.cs" />
     <Compile Include="Assets\ExternalAssets\BrokenVector\LowPolyFencePack\Scripts\DoorController.cs" />
     <Compile Include="Assets\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\Character.cs" />
-    <Compile Include="Assets\Scripts\Enemy\PatrolPoints.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\ExternalAssets\Ancient Chinese hero - Macho\shaders\FXParticleAddtive.shader" />
