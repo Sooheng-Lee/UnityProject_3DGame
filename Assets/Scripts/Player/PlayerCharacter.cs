@@ -4,17 +4,24 @@ using UnityEngine;
 
 public class PlayerCharacter : Character
 {
+    private float alpha = 1f;
     [SerializeField] AudioClip RecoveryClip;
     private void Awake()
     {
         m_Audio = GetComponent<AudioSource>();
         m_Controller = GetComponent<CharacterController>();
+        m_Renderer = GetComponentsInChildren<SkinnedMeshRenderer>();
     }
     void Start()
     {
-        SetCharacterInfo("Knight", 300, 100, 15, 5);
+        SetCharacterInfo("Knight", 10, 100, 15, 5);
     }
-    
+
+    private void Update()
+    {
+        CheckDeath();
+    }
+
     public int UseMP(int value)
     {
         int currentMP = m_Info.MP;
@@ -59,6 +66,15 @@ public class PlayerCharacter : Character
         }
     }
 
+    protected override void CheckDeath()
+    {
+        base.CheckDeath();
+        if(m_State==CharacterState.Death)
+        {
+            StartCoroutine(PlayDeadState());
+            
+        }
+    }
     private void OnTriggerEnter(Collider other)
     {
         // HP, MP Capsule을 이용하여 회복한 경우
@@ -89,5 +105,21 @@ public class PlayerCharacter : Character
     public void DamageEnd()
     {
         m_State = CharacterState.Idle;
+    }
+
+    // 플레이어 사망에 대한 애니메이션이 없어서 바닥쪽으로 쓰러지는 과정으로 대체하였습니다.
+    private IEnumerator PlayDeadState()
+    {
+        float angle = 0f;
+        while(angle < 90f)
+        {
+            angle += 1f;
+            transform.rotation = Quaternion.Euler(new Vector3(angle, transform.eulerAngles.y, 0f));
+            yield return null;
+        }
+        Animator anim = GetComponent<Animator>();
+        anim.enabled = false;
+        yield return new WaitForSeconds(0.5f);
+        gameObject.SetActive(false);
     }
 }

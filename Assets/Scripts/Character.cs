@@ -28,6 +28,7 @@ public class Character : MonoBehaviour
     protected CharacterInfo m_Info;
     protected AudioSource m_Audio;
     protected CharacterController m_Controller;
+    protected SkinnedMeshRenderer[] m_Renderer;
     public CharacterState m_State;
     public AudioClip HitClip;
     protected void SetCharacterInfo(string name, int hp, int mp, int attackMin, int defenseMin)
