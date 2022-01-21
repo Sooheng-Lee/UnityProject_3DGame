@@ -69,9 +69,8 @@ public class Enemy : Character
     void Update()
     {
         attackTimer += Time.deltaTime;
-        Debug.Log(navState);
-        
-        
+        CheckDeath();
+        OnDamaged();
     }
 
     public void AttackStart()
@@ -86,6 +85,16 @@ public class Enemy : Character
         m_State = CharacterState.Idle;
         navState = NavState.Patrol;
     }
+
+    protected override void CheckDeath()
+    {
+        base.CheckDeath();
+        if (m_State == CharacterState.Death)
+        {
+            m_Animator.SetTrigger("Die");
+            Destroy(gameObject, 3f);
+        }
+    }
     private void OnTriggerEnter(Collider other)
     {
         if(other.tag == "PlayerAttack" && m_State!=CharacterState.Damaged)
@@ -93,12 +102,12 @@ public class Enemy : Character
             PlayerCharacter player = other.GetComponentInParent<PlayerCharacter>();
             navState = NavState.Stop;
             if (player.m_State == Character.CharacterState.Attack) {
-                TakeDamage(player.transform, player.GetPlayerInfo().AttackMin, player.GetPlayerInfo().AttackMax);
+                TakeDamage(player.transform, player.GetInfo().AttackMin, player.GetInfo().AttackMax);
                 targetTransform = player.transform;
             }
             else if(player.m_State == Character.CharacterState.Skill)
             {
-                TakeDamage(other.transform, player.GetPlayerInfo().AttackMin * 2, player.GetPlayerInfo().AttackMax * 2);
+                TakeDamage(other.transform, player.GetInfo().AttackMin * 2, player.GetInfo().AttackMax * 2);
                 targetTransform = player.transform;
             }
 
@@ -114,6 +123,11 @@ public class Enemy : Character
             navState = NavState.Patrol;
     }
 
+    private void OnDamaged()
+    {
+        if(m_State == CharacterState.Damaged)
+            AttackArea.SetActive(false);
+    }
     private IEnumerator EnemyActionRoutine()
     {
         while (m_State != CharacterState.Death)

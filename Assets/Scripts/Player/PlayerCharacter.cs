@@ -74,5 +74,20 @@ public class PlayerCharacter : Character
                     Destroy(other.gameObject);
             }
         }
+        // 스킬 사용 혹은 데미지를 입었을 경우 일정시간 무적판정
+        else if(other.tag=="EnemyAttack" && m_State!=CharacterState.Damaged && m_State!=CharacterState.Skill)
+        {
+            Enemy enemy = other.GetComponentInParent<Enemy>();
+            if(enemy!=null)
+            {
+                Debug.Log("Damaged");
+                TakeDamage(enemy.transform, enemy.GetInfo().AttackMin, enemy.GetInfo().AttackMax);
+            }
+        }
+    }
+
+    public void DamageEnd()
+    {
+        m_State = CharacterState.Idle;
     }
 }

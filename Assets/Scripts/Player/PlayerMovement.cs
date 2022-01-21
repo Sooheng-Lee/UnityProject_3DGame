@@ -50,6 +50,7 @@ public class PlayerMovement : MonoBehaviour
     {
         AttackFunc();
         SpecialAttackFunc();
+        OnDamagedFunc();
     }
 
     private void FixedUpdate()
@@ -83,7 +84,16 @@ public class PlayerMovement : MonoBehaviour
         if (m_Controller.isGrounded)
             moveVelocityY = 0f;
     }
-
+    private void OnDamagedFunc()
+    {
+        if(m_Character.m_State==Character.CharacterState.Damaged)
+        {
+            attackArea.SetActive(false);
+            attackLine.enabled = false;
+            specialAttackArea.SetActive(false);
+            specialAttackEffect.SetActive(false);
+        }
+    }
     private void AttackFunc()
     {
         if (m_Character.m_State == Character.CharacterState.Attack || m_Character.m_State == Character.CharacterState.Skill)

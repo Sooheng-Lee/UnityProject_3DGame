@@ -56,13 +56,20 @@ public class Character : MonoBehaviour
         int totalDamage = Random.Range(damageMin, damageMax + 1) - Random.Range(m_Info.DefenseMin, m_Info.DefenseMax);
         totalDamage = (totalDamage > 0) ? totalDamage : 1;
         m_Info.HP -= totalDamage;
+        m_Audio.PlayOneShot(HitClip);
         Vector3 reactVec = transform.position - damageLoc.position;
         reactVec.y = 0;
-        transform.LookAt(-reactVec);
-        m_Audio.PlayOneShot(HitClip);
         StartCoroutine(OnDamaged(reactVec));
     }
 
+    protected virtual void CheckDeath()
+    {
+        if(m_Info.HP <= 0)
+        {
+            m_State = CharacterState.Death;
+            m_Controller.enabled = false;
+        }
+    }
     private IEnumerator OnDamaged(Vector3 Dir)
     {
         while(m_State==Character.CharacterState.Damaged)
@@ -72,7 +79,7 @@ public class Character : MonoBehaviour
         }
     }
 
-    public CharacterInfo GetPlayerInfo()
+    public CharacterInfo GetInfo()
     {
         return m_Info;
     }
