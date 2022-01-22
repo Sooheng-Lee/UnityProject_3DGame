@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - EnemyAttack
   - RecoveryCapsule
+  - Coin
   layers:
   - Default
   - TransparentFX

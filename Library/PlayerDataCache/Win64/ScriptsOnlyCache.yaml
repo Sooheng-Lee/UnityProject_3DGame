@@ -4,21 +4,23 @@ ScriptsOnlyBuild:
     - CameraController
     - EffectManager
     - Enemy
+    - GameManager
+    - InGameUI
     - IntroUI
+    - Item
     - PatrolPoints
     - PlayerCharacter
     - PlayerInput
     - PlayerMovement
     - RecoveryCapsule
+    - SpawnManager
     Unity.Rider.Editor.dll:
     - Packages.Rider.Editor.UnitTesting.CallbackData
     UnityEditor.Graphs.dll:
     - UnityEditor.Graphs.AnimationBlendTree.Graph
     - UnityEditor.Graphs.AnimationBlendTree.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.AnyStateNode
     - UnityEditor.Graphs.AnimationStateMachine.Graph
     - UnityEditor.Graphs.AnimationStateMachine.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.StateNode
     - UnityEditor.Graphs.AnimatorControllerTool
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
@@ -31,6 +33,7 @@ ScriptsOnlyBuild:
     - UnityEngine.UI.GraphicRaycaster
     - UnityEngine.UI.Image
     - UnityEngine.UI.RawImage
+    - UnityEngine.UI.Slider
     - UnityEngine.UI.Text
   sceneClasses:
     Assets/Scenes/Intro.unity:
@@ -55,21 +58,21 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 1656}
+      Script: {instanceID: 1494}
     - Class: 114
-      Script: {instanceID: 2164}
+      Script: {instanceID: 2008}
     - Class: 114
-      Script: {instanceID: 2286}
+      Script: {instanceID: 2136}
     - Class: 114
-      Script: {instanceID: 2454}
+      Script: {instanceID: 2310}
     - Class: 114
-      Script: {instanceID: 2566}
+      Script: {instanceID: 2424}
     - Class: 114
-      Script: {instanceID: 2734}
+      Script: {instanceID: 2604}
     - Class: 114
-      Script: {instanceID: 2918}
+      Script: {instanceID: 2790}
     - Class: 114
-      Script: {instanceID: 25770}
+      Script: {instanceID: 3180}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -132,30 +135,48 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 2256}
+      Script: {instanceID: 1494}
     - Class: 114
-      Script: {instanceID: 2454}
+      Script: {instanceID: 1640}
     - Class: 114
-      Script: {instanceID: 2566}
+      Script: {instanceID: 2008}
     - Class: 114
-      Script: {instanceID: 2592}
+      Script: {instanceID: 2106}
     - Class: 114
-      Script: {instanceID: 2658}
+      Script: {instanceID: 2136}
     - Class: 114
-      Script: {instanceID: 2678}
+      Script: {instanceID: 2310}
     - Class: 114
-      Script: {instanceID: 2734}
+      Script: {instanceID: 2424}
     - Class: 114
-      Script: {instanceID: 2918}
+      Script: {instanceID: 2452}
     - Class: 114
-      Script: {instanceID: 3162}
+      Script: {instanceID: 2520}
     - Class: 114
-      Script: {instanceID: 3416}
+      Script: {instanceID: 2524}
     - Class: 114
-      Script: {instanceID: 3546}
+      Script: {instanceID: 2546}
     - Class: 114
-      Script: {instanceID: 4252}
+      Script: {instanceID: 2604}
+    - Class: 114
+      Script: {instanceID: 2790}
+    - Class: 114
+      Script: {instanceID: 2844}
+    - Class: 114
+      Script: {instanceID: 2926}
+    - Class: 114
+      Script: {instanceID: 3042}
+    - Class: 114
+      Script: {instanceID: 3260}
+    - Class: 114
+      Script: {instanceID: 3304}
+    - Class: 114
+      Script: {instanceID: 3434}
+    - Class: 114
+      Script: {instanceID: 4156}
     - Class: 115
+      Script: {instanceID: 0}
+    - Class: 128
       Script: {instanceID: 0}
     - Class: 135
       Script: {instanceID: 0}
@@ -177,7 +198,11 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 199
       Script: {instanceID: 0}
+    - Class: 213
+      Script: {instanceID: 0}
     - Class: 218
+      Script: {instanceID: 0}
+    - Class: 222
       Script: {instanceID: 0}
     - Class: 223
       Script: {instanceID: 0}
@@ -328,7 +353,7 @@ ScriptsOnlyBuild:
     className: TimelineAsset
   - hash:
       serializedVersion: 2
-      Hash: 5b2ab7205a32a8fbb230bc0b8273e0c5
+      Hash: 2a55e1ec0a549b9714274a4d097bfb52
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: EffectManager
@@ -340,13 +365,19 @@ ScriptsOnlyBuild:
     className: TextMeshProUGUI
   - hash:
       serializedVersion: 2
-      Hash: 74ddd98524ae380e8af95f2df9a4f8e8
+      Hash: e9ebf594970a94042f0cae6cf16de6c7
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Enemy
   - hash:
       serializedVersion: 2
-      Hash: b36ccb88240cbb70a583d5b13b44c53a
+      Hash: 23af8312c404dc04636daf220b3b11e1
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: Item
+  - hash:
+      serializedVersion: 2
+      Hash: dce277c7bb0a777defeb05c53b3f9b7c
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PlayerCharacter
@@ -418,6 +449,12 @@ ScriptsOnlyBuild:
     className: BeforeAfterTestCommandState
   - hash:
       serializedVersion: 2
+      Hash: 34007d8602244477080cee7dd4ad9e56
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: InGameUI
+  - hash:
+      serializedVersion: 2
       Hash: 0fd6822f6177297bd0eb4d83cc7a9030
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
@@ -428,6 +465,12 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: Button
+  - hash:
+      serializedVersion: 2
+      Hash: 8ec20e2c371484054d8d249298e44d31
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: SpawnManager
   - hash:
       serializedVersion: 2
       Hash: 4fd8bf02e3089425d3502e26c44ba31a
@@ -472,6 +515,12 @@ ScriptsOnlyBuild:
     className: PlayerQuitHandler
   - hash:
       serializedVersion: 2
+      Hash: 016014d6c39b2ba8c6aa6407d4acdd1e
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: IntroUI
+  - hash:
+      serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.EventSystems
@@ -482,6 +531,12 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.EventSystems
     className: Physics2DRaycaster
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: GameManager
   - hash:
       serializedVersion: 2
       Hash: da4cc51a02ce84afe2cecd27cfe6997a
@@ -640,7 +695,7 @@ ScriptsOnlyBuild:
     className: TMP_ScrollbarEventHandler
   - hash:
       serializedVersion: 2
-      Hash: b11ff489305de67df11b4ed8a15173d0
+      Hash: 43657e51e69fb3aecd76593c413bec77
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: CameraController
@@ -674,12 +729,6 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.EventSystems
     className: TouchInputModule
-  - hash:
-      serializedVersion: 2
-      Hash: 016014d6c39b2ba8c6aa6407d4acdd1e
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: IntroUI
   platform: 19
   scenePathNames:
   - Assets/Scenes/Intro.unity

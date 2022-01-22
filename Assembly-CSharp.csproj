@@ -56,20 +56,27 @@
     <Compile Include="Assets\Scripts\Player\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\Manager\EffectManager.cs" />
     <Compile Include="Assets\Scripts\Enemy\Enemy.cs" />
+    <Compile Include="Assets\Scripts\Item.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerCharacter.cs" />
+    <Compile Include="Assets\Scripts\InGameUI.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerInput.cs" />
+    <Compile Include="Assets\Scripts\IntroUI.cs" />
     <Compile Include="Assets\Scripts\RecoveryCapsule.cs" />
     <Compile Include="Assets\ExternalAssets\BrokenVector\LowPolyFencePack\Scripts\DoorToggle.cs" />
     <Compile Include="Assets\Scripts\Enemy\PatrolPoints.cs" />
     <Compile Include="Assets\ExternalAssets\BrokenVector\LowPolyFencePack\Scripts\DoorController.cs" />
     <Compile Include="Assets\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\Character.cs" />
-    <Compile Include="Assets\Scripts\IntroUI.cs" />
+    <Compile Include="Assets\Scripts\Manager\SpawnManager.cs" />
+    <Compile Include="Assets\Scripts\Manager\GameManager.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\ExternalAssets\DavePixel\ReadMe!.rtf.txt" />
     <None Include="Assets\ExternalAssets\Ancient Chinese hero - Macho\shaders\FXParticleAddtive.shader" />
     <None Include="Assets\ExternalAssets\Ancient Chinese hero - Macho\shaders\FXParticleZTestAlways.shader" />
+    <None Include="Assets\Packages\BarShader_Simple\Readme.txt" />
     <None Include="Assets\ExternalAssets\Ancient Chinese hero - Macho\readme.txt" />
+    <None Include="Assets\Packages\BarShader_Simple\Shaders\SimpleBar.shader" />
     <None Include="Assets\ExternalAssets\Ancient Chinese hero - Macho\FX\Shader\ToOnFXParticleAlpha.shader" />
   </ItemGroup>
   <ItemGroup>
@@ -660,6 +667,9 @@
     </Reference>
     <Reference Include="Unity.TextMeshPro">
       <HintPath>Library\ScriptAssemblies\Unity.TextMeshPro.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.2D.Sprite.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.2D.Sprite.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UI">
       <HintPath>Library\ScriptAssemblies\UnityEditor.UI.dll</HintPath>

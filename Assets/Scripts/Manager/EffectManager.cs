@@ -6,6 +6,7 @@ public class EffectManager : MonoBehaviour
 {
     public GameObject HP_Recovery_Effect;
     public GameObject MP_Recovery_Effect;
+    public GameObject HitEffect;
     private static EffectManager m_Instance = null;
     public static EffectManager Instance
     {
@@ -34,5 +35,13 @@ public class EffectManager : MonoBehaviour
         }
         effect.transform.parent = parentTrans;
         Destroy(effect, 0.9f);
+    }
+
+    public void PlayHitEffect(Transform parentTrans)
+    {
+        Vector3 pos = parentTrans.position + new Vector3(0f, 0.7f, 1f);
+        GameObject effect = Instantiate(HitEffect, pos, Quaternion.identity);
+        effect.transform.parent = parentTrans;
+        Destroy(effect, 0.8f);
     }
 }

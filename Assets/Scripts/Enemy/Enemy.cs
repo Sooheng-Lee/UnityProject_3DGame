@@ -24,9 +24,9 @@ public class Enemy : Character
     private NavState navState;
 
     // Patrol Mode Components
-    [SerializeField] private GameObject patrolPackages;
     [SerializeField] private float patrolSpeed;
-    private Transform[] patrolSites;
+    public GameObject patrolPackage;
+    private PatrolPoints[] patrolSites;
     private int patrolIndex;
 
     // Track Mode Components
@@ -40,6 +40,9 @@ public class Enemy : Character
     private float attackEnableTime = 1.5f;
     private float attackTimer = 0f;
 
+    // Enemy Death Drop Coin Components
+    [SerializeField] private Item[] item;
+
     void Awake()
     {
         m_Audio = GetComponent<AudioSource>();
@@ -52,9 +55,9 @@ public class Enemy : Character
     {
         AttackArea.SetActive(false);
         navState = NavState.Patrol;
-        patrolSites = patrolPackages.GetComponentsInChildren<Transform>();
-        patrolIndex = 1;
-        m_Nav.SetDestination(patrolSites[patrolIndex].position);
+        patrolSites = patrolPackage.GetComponentsInChildren<PatrolPoints>();
+        patrolIndex = 0;
+        m_Nav.SetDestination(patrolSites[patrolIndex].transform.position);
         switch (m_MonsterType)
         {
             case MonsterType.Slime:
@@ -71,6 +74,17 @@ public class Enemy : Character
         attackTimer += Time.deltaTime;
         CheckDeath();
         OnDamaged();
+    }
+
+    private void OnDisable()
+    {
+        if (item.Length > 0)
+        {
+            int index = Random.Range(0, item.Length);
+            Vector3 pos = transform.position + new Vector3(0, 1.5f, 0f);
+            GameObject dropItem = Instantiate(this.item[index].gameObject, pos, Quaternion.identity);
+            dropItem.transform.parent = null;
+        }
     }
 
     public void AttackStart()
@@ -93,6 +107,7 @@ public class Enemy : Character
         {
             m_Animator.SetTrigger("Die");
             Destroy(gameObject, 3f);
+            this.enabled = false;
         }
     }
     private void OnTriggerEnter(Collider other)
@@ -128,6 +143,16 @@ public class Enemy : Character
         if(m_State == CharacterState.Damaged)
             AttackArea.SetActive(false);
     }
+
+    protected override void TakeDamage(Transform damageLoc, int damageMin, int damageMax)
+    {
+        base.TakeDamage(damageLoc, damageMin, damageMax);
+        CameraController cameraController = Camera.main.GetComponent<CameraController>();
+        if(cameraController!=null)
+        {
+            cameraController.ShakeEffect();
+        }
+    }
     private IEnumerator EnemyActionRoutine()
     {
         while (m_State != CharacterState.Death)
@@ -162,13 +187,13 @@ public class Enemy : Character
                 case NavState.Patrol:
                     m_Nav.enabled = true;
                     m_Nav.speed = patrolSpeed;
-                    if (Vector3.Distance(transform.position, patrolSites[patrolIndex].position) <= 1f)
+                    if (Vector3.Distance(transform.position, patrolSites[patrolIndex].transform.position) <= 1f)
                     {
                         patrolIndex++;
                         if (patrolIndex >= patrolSites.Length)
-                            patrolIndex = 1;
+                            patrolIndex = 0;
                     }
-                    m_Nav.SetDestination(patrolSites[patrolIndex].position);
+                    m_Nav.SetDestination(patrolSites[patrolIndex].transform.position);
                     m_Animator.SetFloat("speed", 0.5f);
                     
                     // Check Player Access

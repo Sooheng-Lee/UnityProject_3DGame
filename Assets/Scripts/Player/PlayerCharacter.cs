@@ -5,7 +5,10 @@ using UnityEngine;
 public class PlayerCharacter : Character
 {
     private float alpha = 1f;
+    private int coin = 0;
+    private int coinMax = 100000;
     [SerializeField] AudioClip RecoveryClip;
+    [SerializeField] AudioClip AcquireClip;
     private void Awake()
     {
         m_Audio = GetComponent<AudioSource>();
@@ -14,7 +17,11 @@ public class PlayerCharacter : Character
     }
     void Start()
     {
-        SetCharacterInfo("Knight", 10, 100, 15, 5);
+        SetCharacterInfo("Knight", 100, 50, 15, 5);
+        InGameUI.Instance.playerName.text = m_Info.name;
+        InGameUI.Instance.hpBar.value = (float)m_Info.HP / m_Info.HPMax;
+        InGameUI.Instance.mpBar.value = (float)m_Info.MP / m_Info.MPMax;
+        InGameUI.Instance.coin.text = coin.ToString();
     }
 
     private void Update()
@@ -24,11 +31,44 @@ public class PlayerCharacter : Character
 
     public int UseMP(int value)
     {
+        int notUsedMP = m_Info.MP;
         int currentMP = m_Info.MP;
         currentMP -= value;
         if (currentMP >= 0)
+        {
             m_Info.MP = currentMP;
+            StartCoroutine(MpDecreaseRoutine(notUsedMP));
+        }
         return currentMP;
+    }
+
+    protected override void TakeDamage(Transform damageLoc, int damageMin, int damageMax)
+    {
+        int notDamagedHp = m_Info.HP;
+        base.TakeDamage(damageLoc, damageMin, damageMax);
+        StartCoroutine(HpDecreaseRoutine(notDamagedHp));
+    }
+
+    private IEnumerator HpDecreaseRoutine(int hp)
+    {
+        while (m_State == CharacterState.Damaged)
+        {
+            hp = (int)Mathf.Lerp(hp, m_Info.HP, 0.1f);
+            InGameUI.Instance.hpBar.value = (float)hp/m_Info.HPMax;
+            yield return null;
+        }
+        InGameUI.Instance.hpBar.value = (float)m_Info.HP / m_Info.HPMax;
+    }
+
+    private IEnumerator MpDecreaseRoutine(int mp)
+    {
+        while(m_State==CharacterState.Skill)
+        {
+            mp = (int)Mathf.Lerp(mp, m_Info.MP, 0.1f);
+            InGameUI.Instance.mpBar.value = (float)mp / m_Info.MPMax;
+            yield return null;
+        }
+        InGameUI.Instance.mpBar.value = (float)m_Info.MP / m_Info.MPMax;
     }
 
     private void GetRecoveryCapsule(ref RecoveryCapsule.CapsuleType type, ref int value)
@@ -39,9 +79,10 @@ public class PlayerCharacter : Character
             case RecoveryCapsule.CapsuleType.HP:
                 while(value > 0 && m_Info.HP < m_Info.HPMax)
                 {
-                    m_Info.HP += value;
+                    m_Info.HP ++;
                     value--;
                     count++;
+                    InGameUI.Instance.hpBar.value = (float)m_Info.HP / m_Info.HPMax;
                 }
                 if (count != 0)
                 {
@@ -53,9 +94,10 @@ public class PlayerCharacter : Character
             case RecoveryCapsule.CapsuleType.MP:
                 while (value > 0 && m_Info.MP < m_Info.MPMax)
                 {
-                    m_Info.MP += value;
+                    m_Info.MP ++;
                     value--;
                     count++;
+                    InGameUI.Instance.mpBar.value = (float)m_Info.MP / m_Info.MPMax;
                 }
                 if (count != 0)
                 {
@@ -100,6 +142,16 @@ public class PlayerCharacter : Character
                 TakeDamage(enemy.transform, enemy.GetInfo().AttackMin, enemy.GetInfo().AttackMax);
             }
         }
+        else if(other.tag=="Coin")
+        {
+            Item itemCoin = other.GetComponent<Item>();
+            bool isEarn = AcquireCoin(itemCoin.value);
+            if(isEarn)
+            {
+                m_Audio.PlayOneShot(AcquireClip);
+                Destroy(other.gameObject);
+            }
+        }
     }
 
     public void DamageEnd()
@@ -122,4 +174,17 @@ public class PlayerCharacter : Character
         yield return new WaitForSeconds(0.5f);
         gameObject.SetActive(false);
     }
+
+    private bool AcquireCoin(int value)
+    {
+        if(coin + value <= coinMax)
+        {
+            coin += value;
+            InGameUI.Instance.coin.text = coin.ToString();
+            return true;
+        }
+        return false;
+    }
+
+
 }

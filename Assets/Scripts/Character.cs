@@ -44,7 +44,7 @@ public class Character : MonoBehaviour
         m_Info.DefenseMax = defenseMin + 5;
     }
 
-    protected void TakeDamage(Transform damageLoc, int damageMin, int damageMax)
+    protected virtual void TakeDamage(Transform damageLoc, int damageMin, int damageMax)
     {
         if (m_State == Character.CharacterState.Damaged)
             return;
@@ -58,6 +58,7 @@ public class Character : MonoBehaviour
         totalDamage = (totalDamage > 0) ? totalDamage : 1;
         m_Info.HP -= totalDamage;
         m_Audio.PlayOneShot(HitClip);
+        EffectManager.Instance.PlayHitEffect(transform);
         Vector3 reactVec = transform.position - damageLoc.position;
         reactVec.y = 0;
         StartCoroutine(OnDamaged(reactVec));
