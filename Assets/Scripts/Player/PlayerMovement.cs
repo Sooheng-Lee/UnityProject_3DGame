@@ -100,6 +100,13 @@ public class PlayerMovement : MonoBehaviour
             return;
         if (m_Input.NormalAttack)
         {
+            RaycastHit hit;
+            if(Physics.Raycast(transform.position, transform.forward, out hit, 2f, LayerMask.GetMask("NPC")))
+            {
+                NPC npc = hit.collider.GetComponent<NPC>();
+                npc.TalkToNPC(transform);
+                return;
+            }
             m_Animator.SetTrigger("DoAttack");
             m_Character.m_State = Character.CharacterState.Attack;
         }

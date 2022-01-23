@@ -72,7 +72,6 @@ public class Enemy : Character
     void Update()
     {
         attackTimer += Time.deltaTime;
-        OnDamaged();
     }
 
     public void AttackStart()
@@ -101,6 +100,7 @@ public class Enemy : Character
                 dropItem.transform.parent = null;
                 GameManager.Instance.currentSpawned.Add(dropItem);
             }
+            AttackArea.SetActive(false);
             m_Animator.SetTrigger("Die");
             GameManager.Instance.IsStageEnd();
             Destroy(gameObject, 3f);
@@ -113,6 +113,7 @@ public class Enemy : Character
         {
             PlayerCharacter player = other.GetComponentInParent<PlayerCharacter>();
             navState = NavState.Stop;
+            AttackArea.SetActive(false);
             if (player.m_State == Character.CharacterState.Attack) {
                 TakeDamage(player.transform, player.GetInfo().AttackMin, player.GetInfo().AttackMax);
                 targetTransform = player.transform;
@@ -133,12 +134,6 @@ public class Enemy : Character
             navState = NavState.Tracking;
         else
             navState = NavState.Patrol;
-    }
-
-    private void OnDamaged()
-    {
-        if(m_State == CharacterState.Damaged)
-            AttackArea.SetActive(false);
     }
 
     protected override void TakeDamage(Transform damageLoc, int damageMin, int damageMax)
