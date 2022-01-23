@@ -394,6 +394,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 214e08cd5e5d74c458e2a81b7ec2c84c, type: 3}
+--- !u!114 &243856671 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5034044633773228901, guid: 0a56e1bfb454ea045a68acfe2ac94cc3, type: 3}
+  m_PrefabInstance: {fileID: 5034044632839175135}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2647448b485e994fac60d2712fe1fe9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &272806035 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8422892626600285392, guid: 214e08cd5e5d74c458e2a81b7ec2c84c, type: 3}
@@ -1020,7 +1031,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &461061590
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2252,7 +2263,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 851423208}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5922769107637962778}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: IncreaseStatus
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: MP
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &851423208
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3722,7 +3745,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1564084268}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5922769107637962778}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: IncreaseStatus
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Defense
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1564084268
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4505,7 +4540,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1830036844}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5922769107637962778}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: IncreaseStatus
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: HP
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1830036844
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4946,7 +4993,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1997276265}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 243856671}
+        m_TargetAssemblyTypeName: InGameUI, Assembly-CSharp
+        m_MethodName: CloseNPCTalkWindow
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1997276265
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5145,7 +5204,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2115639369}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5922769107637962778}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: IncreaseStatus
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Attack
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2115639369
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5251,6 +5322,14 @@ PrefabInstance:
       propertyPath: patrolPackage.Array.data[1]
       value: 
       objectReference: {fileID: 1165063538}
+    - target: {fileID: 3518835999401836295, guid: 9a509ce27b89ab149a9f10e41405bd0a, type: 3}
+      propertyPath: enemyCollection.Array.data[0]
+      value: 
+      objectReference: {fileID: 5887036853445807956, guid: aec054b07eb93d949964054d5a2008c0, type: 3}
+    - target: {fileID: 3518835999401836295, guid: 9a509ce27b89ab149a9f10e41405bd0a, type: 3}
+      propertyPath: enemyCollection.Array.data[1]
+      value: 
+      objectReference: {fileID: 8169651495432492969, guid: b9f36bb01bd90144b91735853e1d8519, type: 3}
     - target: {fileID: 3518835999401836297, guid: 9a509ce27b89ab149a9f10e41405bd0a, type: 3}
       propertyPath: m_Name
       value: SpawnManager
@@ -5387,6 +5466,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 940650698}
     - target: {fileID: 5034044633773228901, guid: 0a56e1bfb454ea045a68acfe2ac94cc3, type: 3}
+      propertyPath: HpButton
+      value: 
+      objectReference: {fileID: 1830036843}
+    - target: {fileID: 5034044633773228901, guid: 0a56e1bfb454ea045a68acfe2ac94cc3, type: 3}
+      propertyPath: MpButton
+      value: 
+      objectReference: {fileID: 851423207}
+    - target: {fileID: 5034044633773228901, guid: 0a56e1bfb454ea045a68acfe2ac94cc3, type: 3}
       propertyPath: NPC_Panel
       value: 
       objectReference: {fileID: 461061589}
@@ -5406,6 +5493,14 @@ PrefabInstance:
       propertyPath: MPPriceText
       value: 
       objectReference: {fileID: 995198047}
+    - target: {fileID: 5034044633773228901, guid: 0a56e1bfb454ea045a68acfe2ac94cc3, type: 3}
+      propertyPath: AttackButton
+      value: 
+      objectReference: {fileID: 2115639368}
+    - target: {fileID: 5034044633773228901, guid: 0a56e1bfb454ea045a68acfe2ac94cc3, type: 3}
+      propertyPath: DefenseButton
+      value: 
+      objectReference: {fileID: 1564084267}
     - target: {fileID: 5034044633773228901, guid: 0a56e1bfb454ea045a68acfe2ac94cc3, type: 3}
       propertyPath: AttackPriceText
       value: 
@@ -5583,8 +5678,34 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5922769108232077257, guid: 0fc4b445c470bc844b362f6673857bfe, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 0fc4b445c470bc844b362f6673857bfe, type: 3}
+--- !u!1 &5922769107637962777 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5922769108232077256, guid: 0fc4b445c470bc844b362f6673857bfe, type: 3}
+  m_PrefabInstance: {fileID: 5922769107637962776}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5922769107637962778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5922769107637962777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0be8f6ff75b9d4148806b3330397e03b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Type: 0
+  gate: {fileID: 298075331}
+  NPC: {fileID: 272806035}
+  Attack: 0
+  Defense: 0
+  Hp: 0
+  Mp: 0
+  currentSpawned: []
 --- !u!4 &9066050385720075185 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5073093274617045419, guid: abe97073b40d35f4b898e0db06a3c4ea, type: 3}

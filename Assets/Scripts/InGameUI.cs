@@ -22,15 +22,10 @@ public class InGameUI : MonoBehaviour
     public Text DefensePriceText;
     public Text HPPriceText;
     public Text MPPriceText;
-    private int MaxValue = 10;
-    private int attackValue = 0;
-    private int DefenseValue = 0;
-    private int HpValue = 0;
-    private int MpValue = 0;
-    private int AttackPrice = 500;
-    private int DefensePrice = 500;
-    private int HpPrice = 500;
-    private int MpPrice = 500;
+    public Button AttackButton;
+    public Button DefenseButton;
+    public Button HpButton;
+    public Button MpButton;
     
 
     public GameObject escMenu;
@@ -123,14 +118,21 @@ public class InGameUI : MonoBehaviour
     {
         NPC_Panel.SetActive(true);
         onTalkWindowOpen = true;
-        AttackText.text = "Attack " + attackValue.ToString();
-        DefenseText.text = "Defense " + DefenseValue.ToString();
-        HPText.text = "HP " + HpValue.ToString();
-        MPText.text = "MP " + MpValue.ToString();
+        
+        AttackText.text = "Attack " + GameManager.AttackValue.ToString();
+        DefenseText.text = "Defense " + GameManager.DefenseValue.ToString();
+        HPText.text = "HP " + GameManager.HpValue.ToString();
+        MPText.text = "MP " + GameManager.MpValue.ToString();
 
-        AttackPriceText.text = AttackPrice.ToString();
-        DefensePriceText.text = DefensePrice.ToString();
-        HPPriceText.text = HpPrice.ToString();
-        MPPriceText.text = MpPrice.ToString();
+        AttackPriceText.text = GameManager.AttackPrice.ToString();
+        DefensePriceText.text = GameManager.DefensePrice.ToString();
+        HPPriceText.text = GameManager.HpPrice.ToString();
+        MPPriceText.text = GameManager.MpPrice.ToString();   
+    }
+
+    public void CloseNPCTalkWindow()
+    {
+        NPC_Panel.SetActive(false);
+        onTalkWindowOpen = false;
     }
 }

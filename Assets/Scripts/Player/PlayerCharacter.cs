@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerCharacter : Character
 {
     private float alpha = 1f;
-    static private int coin = 0;
+    public static int coin = 0;
     private int coinMax = 100000;
     [SerializeField] AudioClip RecoveryClip;
     [SerializeField] AudioClip AcquireClip;
@@ -17,7 +17,7 @@ public class PlayerCharacter : Character
     }
     void Start()
     {
-        SetCharacterInfo("Knight", 50, 50, 15, 5);
+        SetCharacterInfo("Knight", 50 + GameManager.HpValue * 50, 50 + GameManager.MpValue * 50, 15 + GameManager.AttackValue * 2, 5 + GameManager.DefenseValue * 2);
         InGameUI.Instance.playerName.text = m_Info.name;
         InGameUI.Instance.hpBar.value = (float)m_Info.HP / m_Info.HPMax;
         InGameUI.Instance.mpBar.value = (float)m_Info.MP / m_Info.MPMax;
@@ -36,35 +36,32 @@ public class PlayerCharacter : Character
         if (currentMP >= 0)
         {
             m_Info.MP = currentMP;
-            StartCoroutine(MpDecreaseRoutine(notUsedMP));
+            StartCoroutine(MpDecreaseRoutine());
         }
         return currentMP;
     }
 
     protected override void TakeDamage(Transform damageLoc, int damageMin, int damageMax)
     {
-        float notDamagedHp = m_Info.HP;
         base.TakeDamage(damageLoc, damageMin, damageMax);
-        StartCoroutine(HpDecreaseRoutine(notDamagedHp));
+        StartCoroutine(HpDecreaseRoutine());
     }
 
-    private IEnumerator HpDecreaseRoutine(float hp)
+    private IEnumerator HpDecreaseRoutine()
     {
         while (m_State==CharacterState.Damaged)
         {
-            hp = Mathf.Lerp(hp, (float)m_Info.HP, 0.05f);
-            InGameUI.Instance.hpBar.value = hp / m_Info.HPMax ;
+            InGameUI.Instance.hpBar.value = Mathf.Lerp(InGameUI.Instance.hpBar.value, (float)m_Info.HP/m_Info.HPMax, 0.5f);
             yield return null;
         }
         InGameUI.Instance.hpBar.value = (float)m_Info.HP / m_Info.HPMax;
     }
 
-    private IEnumerator MpDecreaseRoutine(float mp)
+    private IEnumerator MpDecreaseRoutine()
     {
         while (m_State == CharacterState.Skill)
         {
-            mp = Mathf.Lerp(mp, (float)m_Info.MP, 0.05f);
-            InGameUI.Instance.mpBar.value = (float)mp / m_Info.MPMax;
+            InGameUI.Instance.mpBar.value = Mathf.Lerp(InGameUI.Instance.mpBar.value, (float)m_Info.MP/m_Info.MPMax, 0.5f);
             yield return null;
         }
         InGameUI.Instance.mpBar.value = (float)m_Info.MP / m_Info.MPMax;

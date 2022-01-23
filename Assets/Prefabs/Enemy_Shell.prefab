@@ -872,7 +872,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_State: 0
   HitClip: {fileID: 8300000, guid: 90115a0fe3e8b4e098b1111cc014a9cc, type: 3}
-  m_MonsterType: 0
+  m_MonsterType: 1
   patrolSpeed: 3
   patrolPackage: {fileID: 0}
   trackSpeed: 7
