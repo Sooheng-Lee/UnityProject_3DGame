@@ -10,10 +10,13 @@ public class SpawnManager : MonoBehaviour
         Enemy_Shell
     }
 
+    //Enemy Spawn Component
     private int enemyCount = 0;
     public Enemy[] enemyCollection;
     public GameObject[] patrolPackage;
     public GameObject[] spawnPoints;
+
+    public List<GameObject> currentSpawned;
 
     private static SpawnManager m_Instance = null;
     public static SpawnManager Instance
@@ -54,9 +57,18 @@ public class SpawnManager : MonoBehaviour
                     enemy = Instantiate(enemyCollection[1].gameObject, spawnPos, Quaternion.identity);
                     break;
             }
+            currentSpawned.Add(enemy);
             Enemy enemyScript = enemy.GetComponent<Enemy>();
             enemyScript.patrolPackage = patrolPackage[patrolNum];
 
+        }
+    }
+
+    public void AllClearSpawned()
+    {
+        foreach(GameObject spawned in currentSpawned)
+        {
+            Destroy(spawned);
         }
     }
 }

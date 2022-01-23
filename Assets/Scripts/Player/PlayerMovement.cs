@@ -96,7 +96,7 @@ public class PlayerMovement : MonoBehaviour
     }
     private void AttackFunc()
     {
-        if (m_Character.m_State == Character.CharacterState.Attack || m_Character.m_State == Character.CharacterState.Skill)
+        if (m_Character.m_State != Character.CharacterState.Idle)
             return;
         if (m_Input.NormalAttack)
         {
@@ -107,7 +107,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void SpecialAttackFunc()
     {
-        if (m_Character.m_State == Character.CharacterState.Attack || m_Character.m_State == Character.CharacterState.Skill)
+        if (m_Character.m_State != Character.CharacterState.Idle)
             return;
 
         if (m_Input.SpecialAttack && m_Character.UseMP(10) >= 0)

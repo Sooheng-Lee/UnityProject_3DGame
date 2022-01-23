@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerCharacter : Character
 {
     private float alpha = 1f;
-    private int coin = 0;
+    static private int coin = 0;
     private int coinMax = 100000;
     [SerializeField] AudioClip RecoveryClip;
     [SerializeField] AudioClip AcquireClip;
@@ -17,7 +17,7 @@ public class PlayerCharacter : Character
     }
     void Start()
     {
-        SetCharacterInfo("Knight", 100, 50, 15, 5);
+        SetCharacterInfo("Knight", 50, 50, 15, 5);
         InGameUI.Instance.playerName.text = m_Info.name;
         InGameUI.Instance.hpBar.value = (float)m_Info.HP / m_Info.HPMax;
         InGameUI.Instance.mpBar.value = (float)m_Info.MP / m_Info.MPMax;
@@ -26,12 +26,11 @@ public class PlayerCharacter : Character
 
     private void Update()
     {
-        CheckDeath();
     }
 
     public int UseMP(int value)
     {
-        int notUsedMP = m_Info.MP;
+        float notUsedMP = m_Info.MP;
         int currentMP = m_Info.MP;
         currentMP -= value;
         if (currentMP >= 0)
@@ -44,27 +43,27 @@ public class PlayerCharacter : Character
 
     protected override void TakeDamage(Transform damageLoc, int damageMin, int damageMax)
     {
-        int notDamagedHp = m_Info.HP;
+        float notDamagedHp = m_Info.HP;
         base.TakeDamage(damageLoc, damageMin, damageMax);
         StartCoroutine(HpDecreaseRoutine(notDamagedHp));
     }
 
-    private IEnumerator HpDecreaseRoutine(int hp)
+    private IEnumerator HpDecreaseRoutine(float hp)
     {
-        while (m_State == CharacterState.Damaged)
+        while (m_State==CharacterState.Damaged)
         {
-            hp = (int)Mathf.Lerp(hp, m_Info.HP, 0.1f);
-            InGameUI.Instance.hpBar.value = (float)hp/m_Info.HPMax;
+            hp = Mathf.Lerp(hp, (float)m_Info.HP, 0.05f);
+            InGameUI.Instance.hpBar.value = hp / m_Info.HPMax ;
             yield return null;
         }
         InGameUI.Instance.hpBar.value = (float)m_Info.HP / m_Info.HPMax;
     }
 
-    private IEnumerator MpDecreaseRoutine(int mp)
+    private IEnumerator MpDecreaseRoutine(float mp)
     {
-        while(m_State==CharacterState.Skill)
+        while (m_State == CharacterState.Skill)
         {
-            mp = (int)Mathf.Lerp(mp, m_Info.MP, 0.1f);
+            mp = Mathf.Lerp(mp, (float)m_Info.MP, 0.05f);
             InGameUI.Instance.mpBar.value = (float)mp / m_Info.MPMax;
             yield return null;
         }
@@ -114,7 +113,7 @@ public class PlayerCharacter : Character
         if(m_State==CharacterState.Death)
         {
             StartCoroutine(PlayDeadState());
-            
+            InGameUI.Instance.OpenDeadScreen();
         }
     }
     private void OnTriggerEnter(Collider other)

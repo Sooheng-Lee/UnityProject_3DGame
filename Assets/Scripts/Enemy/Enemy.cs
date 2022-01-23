@@ -72,19 +72,7 @@ public class Enemy : Character
     void Update()
     {
         attackTimer += Time.deltaTime;
-        CheckDeath();
         OnDamaged();
-    }
-
-    private void OnDisable()
-    {
-        if (item.Length > 0)
-        {
-            int index = Random.Range(0, item.Length);
-            Vector3 pos = transform.position + new Vector3(0, 1.5f, 0f);
-            GameObject dropItem = Instantiate(this.item[index].gameObject, pos, Quaternion.identity);
-            dropItem.transform.parent = null;
-        }
     }
 
     public void AttackStart()
@@ -105,7 +93,16 @@ public class Enemy : Character
         base.CheckDeath();
         if (m_State == CharacterState.Death)
         {
+            if (item.Length > 0)
+            {
+                int index = Random.Range(0, item.Length);
+                Vector3 pos = transform.position + new Vector3(0, 1.5f, 0f);
+                GameObject dropItem = Instantiate(this.item[index].gameObject, pos, Quaternion.identity);
+                dropItem.transform.parent = null;
+                GameManager.Instance.currentSpawned.Add(dropItem);
+            }
             m_Animator.SetTrigger("Die");
+            GameManager.Instance.IsStageEnd();
             Destroy(gameObject, 3f);
             this.enabled = false;
         }
@@ -161,7 +158,7 @@ public class Enemy : Character
             {
                 case NavState.Stop:
                     m_Nav.enabled = false;
-                    if(m_State==CharacterState.Attack)
+                    if (m_State == CharacterState.Attack)
                     {
                         if (attackTimer >= attackEnableTime)
                         {
@@ -195,7 +192,7 @@ public class Enemy : Character
                     }
                     m_Nav.SetDestination(patrolSites[patrolIndex].transform.position);
                     m_Animator.SetFloat("speed", 0.5f);
-                    
+
                     // Check Player Access
                     Collider[] targetDetect = Physics.OverlapSphere(transform.position, 5f, LayerMask.GetMask("Player"));
                     foreach (Collider hit in targetDetect)
@@ -211,13 +208,13 @@ public class Enemy : Character
                     m_Nav.speed = trackSpeed;
                     m_Animator.SetFloat("speed", 1f);
                     m_Nav.SetDestination(targetTransform.position);
-                    
+
                     if (Vector3.Distance(transform.position, targetTransform.position) <= 1.5f)
                     {
                         navState = NavState.Stop;
                         m_State = CharacterState.Attack;
                     }
-                    else if(Vector3.Distance(transform.position, targetTransform.position) > 5f)
+                    else if (Vector3.Distance(transform.position, targetTransform.position) > 5f)
                     {
                         navState = NavState.Patrol;
                         m_State = CharacterState.Idle;
@@ -227,5 +224,4 @@ public class Enemy : Character
             yield return null;
         }
     }
-
 }

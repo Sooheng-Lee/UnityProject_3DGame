@@ -62,6 +62,7 @@ public class Character : MonoBehaviour
         Vector3 reactVec = transform.position - damageLoc.position;
         reactVec.y = 0;
         StartCoroutine(OnDamaged(reactVec));
+        CheckDeath();
     }
 
     protected virtual void CheckDeath()
