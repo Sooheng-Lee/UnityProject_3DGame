@@ -111,6 +111,7 @@ public class PlayerCharacter : Character
         {
             StartCoroutine(PlayDeadState());
             InGameUI.Instance.OpenDeadScreen();
+            InGameUI.Instance.isPlayerDead = true;
         }
     }
     private void OnTriggerEnter(Collider other)

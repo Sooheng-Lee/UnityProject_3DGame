@@ -110,6 +110,7 @@ public class Enemy : Character
             AttackArea.SetActive(false);
             m_Animator.SetTrigger("Die");
             GameManager.Instance.IsStageEnd();
+            m_Canvas.transform.localRotation = Quaternion.Euler(new Vector3(0, -transform.eulerAngles.y, 0));
             Destroy(gameObject, 3f);
             this.enabled = false;
         }

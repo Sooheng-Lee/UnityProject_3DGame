@@ -36,7 +36,7 @@ public class InGameUI : MonoBehaviour
     public Text EnemyCount;
     private bool onMenuOpen = false;
     private bool onTalkWindowOpen = false;
-    
+    public bool isPlayerDead = false;
 
     private void Start()
     {
@@ -58,7 +58,22 @@ public class InGameUI : MonoBehaviour
             {
                 onMenuOpen = !onMenuOpen;
                 escMenu.SetActive(onMenuOpen);
-                Time.timeScale = 0f;
+                if (onMenuOpen)
+                {
+                    Time.timeScale = 0f;
+                    if(isPlayerDead)
+                    {
+                        DeadScreen.gameObject.SetActive(false);
+                    }
+                }
+                else
+                {
+                    Time.timeScale = 1f;
+                    if (isPlayerDead)
+                    {
+                        DeadScreen.gameObject.SetActive(true);
+                    }
+                }
             }
         }
     }
@@ -77,6 +92,10 @@ public class InGameUI : MonoBehaviour
     {
         onMenuOpen = false;
         escMenu.SetActive(false);
+        if (isPlayerDead)
+        {
+            DeadScreen.gameObject.SetActive(!onMenuOpen);
+        }
         Time.timeScale = 1f;
     }
 
@@ -85,6 +104,7 @@ public class InGameUI : MonoBehaviour
         Time.timeScale = 1f;
         onMenuOpen = false;
         escMenu.SetActive(false);
+        PlayerCharacter.coin = 0;
         GameManager.Instance.AllClearSpawned();
         SceneManager.LoadScene(SceneManager.sceneCount, LoadSceneMode.Single);
     }
