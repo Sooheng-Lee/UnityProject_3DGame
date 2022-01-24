@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class Enemy : Character
 {
@@ -18,10 +19,12 @@ public class Enemy : Character
     }
 
     // Enemy Base Components
-    [SerializeField] MonsterType m_MonsterType;
+    [SerializeField] private MonsterType m_MonsterType;
+    [SerializeField] private Slider HP_Bar;
     private NavMeshAgent m_Nav;
     private Animator m_Animator;
     private NavState navState;
+    private Canvas m_Canvas;
 
     // Patrol Mode Components
     [SerializeField] private float patrolSpeed;
@@ -49,10 +52,13 @@ public class Enemy : Character
         m_Controller = GetComponent<CharacterController>();
         m_Nav = GetComponent<NavMeshAgent>();
         m_Animator = GetComponent<Animator>();
+        m_Canvas = GetComponentInChildren<Canvas>();
     }
 
     private void Start()
     {
+        HP_Bar.value = 1f;
+        HP_Bar.gameObject.SetActive(false);
         AttackArea.SetActive(false);
         navState = NavState.Patrol;
         patrolSites = patrolPackage.GetComponentsInChildren<PatrolPoints>();
@@ -72,6 +78,7 @@ public class Enemy : Character
     void Update()
     {
         attackTimer += Time.deltaTime;
+        m_Canvas.transform.localRotation = Quaternion.Euler(new Vector3(0, -transform.eulerAngles.y, 0));
     }
 
     public void AttackStart()
@@ -130,6 +137,7 @@ public class Enemy : Character
     public void DamageEnd()
     {
         m_State = CharacterState.Idle;
+        HP_Bar.gameObject.SetActive(false);
         if (targetTransform != null)
             navState = NavState.Tracking;
         else
@@ -139,11 +147,24 @@ public class Enemy : Character
     protected override void TakeDamage(Transform damageLoc, int damageMin, int damageMax)
     {
         base.TakeDamage(damageLoc, damageMin, damageMax);
+        HP_Bar.gameObject.SetActive(true);
+        StartCoroutine(DecreaseEnemyHP());
+        
         CameraController cameraController = Camera.main.GetComponent<CameraController>();
         if(cameraController!=null)
         {
             cameraController.ShakeEffect();
         }
+    }
+
+    private IEnumerator DecreaseEnemyHP()
+    {
+        while(m_State==CharacterState.Damaged)
+        {
+            HP_Bar.value = Mathf.Lerp(HP_Bar.value, (float)m_Info.HP / m_Info.HPMax, 0.1f);
+            yield return null;
+        }
+        HP_Bar.value = (float)m_Info.HP / m_Info.HPMax;
     }
     private IEnumerator EnemyActionRoutine()
     {
